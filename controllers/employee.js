@@ -24,7 +24,7 @@ async function formatEmployeeData(employee, token) {
 
 async function getEmployeesData(token) {
   try {
-    const response = await axios.get('https://api.bamboohr.com/api/gateway.php/onestack/v1/employees/directory', {
+    const response = await axios.get(`${process.env.BASE_URL}/employees/directory`, {
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Basic ' + token
@@ -44,7 +44,7 @@ async function getEmployeesData(token) {
 
 async function getDependentOnEmployeDetails(employeeId, token) {
   try {
-    const response = await axios.get(`https://api.bamboohr.com/api/gateway.php/onestack/v1/employeedependents/${employeeId}`, {
+    const response = await axios.get(`${process.env.BASE_URL}employeedependents/${employeeId}`, {
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Basic ' + token
