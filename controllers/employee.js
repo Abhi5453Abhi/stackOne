@@ -3,7 +3,7 @@ require('dotenv').config();
 
 async function formatEmployeeData(employee, token, dependents_information) {
     const dependentOnEmployeeDetails = dependents_information === 'true' ? await getDependentOnEmployeDetails(employee.id, token) : null;
-    return {
+    const formatEmployeeDataResponse = {
         id: employee.id,
         name: employee.displayName,
         title: employee.jobTitle,
@@ -18,8 +18,11 @@ async function formatEmployeeData(employee, token, dependents_information) {
         job_title: employee.jobTitle,
         department: employee.department,
         supervisor: employee.supervisor,
-        dependentOnEmployeeDetails,
     };
+    if(dependentOnEmployeeDetails){
+        formatEmployeeDataResponse.dependentOnEmployeeDetails = dependentOnEmployeeDetails;
+    }
+    return formatEmployeeDataResponse;
 }
 
 async function getEmployeesData(token, dependents_information) {
@@ -46,7 +49,6 @@ async function getEmployeesData(token, dependents_information) {
 
 async function getDependentOnEmployeDetails(employeeId, token) {
     try {
-        console.log("URL ", process.env.BASE_URL);
         const response = await axios.get(`${process.env.BASE_URL}employeedependents/${employeeId}`, {
             headers: {
                 'Accept': 'application/json',
@@ -73,7 +75,6 @@ async function getAllEmployees(req, res) {
         const {
             dependents_information
         } = req.query;
-        console.log(dependents_information);
         const {
             employees
         } = await getEmployeesData(token, dependents_information);
